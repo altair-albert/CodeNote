@@ -6,23 +6,30 @@
     <title>Markdown</title>
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/editormd.css" />
+    <link rel="stylesheet" href="../lib/amaran/css/amaran.min.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="../lib/amaran/css/animate.min.css" media="screen" title="no title" charset="utf-8">
     <style>
-        .dialog{
+        .dialog {
             display: none;
+        }
+        .amaran-wrapper span {
+            font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体",monospace;
         }
     </style>
 </head>
 
 <body>
-    <input type="file" class="dialog" id="open"  nwworkingdir="E:\" accept=".md">
-    <input type="file" class="dialog" id="save" nwsaveas="markdown.md" >
-    <input type="file" class="dialog" id="saveas" nwsaveas="markdown.md" >
+    <input type="file" class="dialog" id="open" nwworkingdir="E:\" accept=".md">
+    <input type="file" class="dialog" id="save" nwsaveas="markdown.md">
+    <input type="file" class="dialog" id="saveas" nwsaveas="markdown.md">
     <input type="file" class="dialog" id="exportHTML" nwdirectory>
     <div id="layout">
         <div id="editormd"></div>
     </div>
     <script src="../js/jquery.min.js"></script>
     <script src="../editormd.js"></script>
+    <script src="../lib/amaran/js/jquery.amaran.min.js" charset="utf-8"></script>
     <script src="../js/main.js" type="text/javascript"></script>
 </body>
+
 </html>

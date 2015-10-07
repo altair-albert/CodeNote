@@ -1,21 +1,30 @@
-// 保存文件
+var message = require('./message.js');
+/**
+ * save file to some path
+ * @param  {path} fileName file which need to save
+ * @param  {mdeditor} editor   markdown editor
+ */
 function save(fileName, editor) {
     var fs = require('fs');
     var md = editor.getMarkdown();
     fs.writeFile(fileName, md, function(err) {
         if (err) {
-            console.log(err);
+            global.error(message('error'));
         } else {
-            console.log("Success Save file " + fileName);
+            global.success(message('success'));
         }
     });
 };
-// 加载数据到编辑器中
+/**
+ * load file data to markdown editor
+ * @param  {string} md     which need to load
+ * @param  {mdeditor} editor markdown entity
+ */
 function loadData(md, editor) {
     var fs = require('fs');
     fs.readFile(md, 'utf-8', function(err, data) {
         if (err) {
-            console.error("load file error :" + error);
+            global.error(message('openfile','error'))
         } else {
             editor.setMarkdown(data);
         }
@@ -39,11 +48,7 @@ function chooseDir(name, editor, callback) {
     });
     chooser.trigger("click");
 }
-// 导出HTML
-function exportHTML(name, editor) {
-    copyFileTo(name);
-    readFileData(name,editor.getPreviewedHTML(),writeFileTo);
-};
+
 
 /**
  * 将文件内容写入到模板中
@@ -52,15 +57,14 @@ function exportHTML(name, editor) {
  * @param  {string} contents 需要写入的内容
  */
 function writeFileTo(name, tpl, contents) {
+    var fs = require('fs');
     contents.replace('>\s*<', '><');
-    tpl.replace('{%text%}', contents);
-    fs.writeFile(name + "/index.html", tpl, function(err) {
+    var html = tpl.replace('<data>', contents);
+    fs.writeFile(name + "/index.html", html, function(err) {
         if (err) {
-            alert("ExportHTML false");
-            console.log("export HTML false");
+            global.error(message('exportHTML','error'));
         } else {
-            alert("ExportHTML success");
-            console.log("export to " + name);
+            global.success(message('exportHTML','success'));
         }
     });
 }
@@ -75,9 +79,8 @@ function readFileData(name, text, callback) {
     var path = require('path');
     fs.readFile(path.dirname(__dirname) + '/export/index.html', 'utf-8', function(err, tpl) {
         if (err) {
-            console.log(err);
+            global.error(message('exportHTML','error'));
         } else {
-            console.log("read file ok!");
             callback(name, tpl, text);
         }
     });
@@ -90,17 +93,33 @@ function readFileData(name, text, callback) {
 function copyFileTo(name) {
     var copydir = require("copy-dir");
     var path = require('path');
-    copydir.sync(path.dirname(__dirname) + '/export/', name, function(err) {
+    copydir.sync(path.dirname(__dirname) + '/export/', name, function(_stat, _path, _file) {
+        var stat = true;
+        if (_stat === 'file' && path.extname(_path) === '.html') {
+            // copy files, without .html
+            stat = false;
+        }
+        return stat;
+    }, function(err) {
         if (err) {
-            console.log(err);
+            console.log("copy dir is false", err);
         } else {
-            console.log("move to " + name);
+            console.log("move to ", name);
         }
     });
 }
+/**
+ * export HTML to dest
+ * @param  {path} name   path to save HTML
+ * @param  {mdeditor} editor editor entity
+ */
+function exportHTML(name, editor) {
+    copyFileTo(name);
+    readFileData(name, editor.getPreviewedHTML(), writeFileTo);
+};
 // 导出PDF
 function exportPDF(name, editor) {
-    // body...
+    // TODO
 }
 
 // 打开选择对话框

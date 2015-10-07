@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Markdown</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/editormd.css" />
+    <style>
+        .dialog{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" class="dialog" id="open"  nwworkingdir="E:\" accept=".md">
+    <input type="file" class="dialog" id="save" nwsaveas="markdown.md" >
+    <input type="file" class="dialog" id="saveas" nwsaveas="markdown.md" >
+    <input type="file" class="dialog" id="exportHTML" nwdirectory>
+    <div id="layout">
+        <div id="editormd"></div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../editormd.js"></script>
+    <script src="../js/main.js" type="text/javascript"></script>
+</body>
+</html>

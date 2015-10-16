@@ -5,7 +5,7 @@ function toolbar() {
         "h1", "h2", "h3", "h4", "h5", "h6", "|",
         "list-ul", "list-ol", "hr", "|",
         "link", "reference-link", "image", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
-        "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|",
+        "goto-line", "watch", "preview", "clear", "search", "changetheme", "|",
         "help", "info"
     ];
 }
@@ -14,34 +14,18 @@ var customIcon = {
     open: 'fa-folder-open-o',
     save: 'fa-floppy-o',
     exportHTML: 'fa-file-code-o',
-    exportPDF: 'fa-file-pdf-o'
+    exportPDF: 'fa-file-pdf-o',
+    changetheme: 'fa-moon-o'
 };
 
 var markdownEditor;
 $(function() {
     global.window = window;
-    global.gui = require('nw.gui');
+    var gui = global.gui = require('nw.gui');
+    var win = gui.Window.get();
+    win.maximize();
     global.$ = $;
     global.fileName = "";
-    global.success = function(msg) {
-        $.amaran({
-            message: msg,
-            position: 'top right',
-            inEffect: 'slideBottom'
-        });
-    };
-    global.error = function(msg) {
-        $.amaran({
-            theme: 'colorful',
-            content: {
-                bgcolor: '#a70200',
-                color: '#fff',
-                message: msg
-            },
-            position: 'top right',
-            inEffect: 'slideBottom'
-        });
-    };
     var os = require('os');
     var menu = require('../js/menu.js');
     (function(md, editor) {
@@ -64,12 +48,16 @@ $(function() {
             flowChart: true, // 开启流程图支持，默认关闭
             sequenceDiagram: true, // 开启时序/序列图支持，默认关闭,
             dialogMaskOpacity: 0.4, // 设置透明遮罩层的透明度，全局通用，默认值为0.1
-            //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+            dialogMaskBgColor: "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
             imageUpload: false,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            disabledKeyMaps: ["F11"],
             onload: function() {
                 var editor = this;
                 this.fullscreen();
+                win.on("resize", function(w, h) {
+                    editor.resize(w, h);
+                });
                 var saveKeyMap = {
                     "Ctrl-S": function(cm) {
                         menu.open("#save", editor);
@@ -82,7 +70,7 @@ $(function() {
                     },
                     "Shift-Ctrl-O": function(cm) {
                         menu.open("#exportHTML", editor);
-                    }
+                    },
                 };
                 this.addKeyMap(saveKeyMap);
             },
@@ -93,7 +81,8 @@ $(function() {
                     open: "打开",
                     save: "保存", // 自定义按钮的提示文本，即title属性
                     exportHTML: "导出HTML",
-                    exportPDF: "导出PDF"
+                    exportPDF: "导出PDF",
+                    changetheme:"夜间模式"
                 }
             },
             toolbarHandlers: {
@@ -103,7 +92,7 @@ $(function() {
                  * @param  {mdeditor} editor editor entity
                  */
                 open: function(editor) {
-                     menu.open("#open", this);
+                    menu.open("#open", this);
                 },
                 /**
                  * save file
@@ -120,6 +109,20 @@ $(function() {
                  */
                 exportHTML: function(editor) {
                     menu.open("#exportHTML", this);
+                },
+                "changetheme": function() {
+                    var icon = this.toolbar.find('.fa[name=changetheme]');
+                    if (icon.hasClass('fa-moon-o')) {
+                        menu.setTheme(this, "default");
+                        icon.removeClass('fa-moon-o');
+                        icon.addClass('fa-sun-o');
+                        icon.parent().attr("title", "日间模式");
+                    } else {
+                        menu.setTheme(this, "dark");
+                        icon.removeClass('fa-sun-o');
+                        icon.addClass('fa-moon-o');
+                        icon.parent().attr('title', "夜间模式");
+                    }
                 }
             }
         });

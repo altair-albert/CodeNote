@@ -1,4 +1,5 @@
-var message = require('./message.js');
+var message = require('./message.js').msg;
+var toast = require("./toast.js");
 /**
  * save file to some path
  * @param  {path} fileName file which need to save
@@ -9,9 +10,9 @@ function save(fileName, editor) {
     var md = editor.getMarkdown();
     fs.writeFile(fileName, md, function(err) {
         if (err) {
-            global.error(message('error'));
+            toast.error(message('error'));
         } else {
-            global.success(message('success'));
+            toast.success(message('success'));
         }
     });
 };
@@ -24,7 +25,7 @@ function loadData(md, editor) {
     var fs = require('fs');
     fs.readFile(md, 'utf-8', function(err, data) {
         if (err) {
-            global.error(message('openfile','error'))
+            toast.error(message('openfile', 'error'))
         } else {
             editor.setMarkdown(data);
         }
@@ -62,9 +63,9 @@ function writeFileTo(name, tpl, contents) {
     var html = tpl.replace('<data>', contents);
     fs.writeFile(name + "/index.html", html, function(err) {
         if (err) {
-            global.error(message('exportHTML','error'));
+            toast.error(message('exportHTML', 'error'));
         } else {
-            global.success(message('exportHTML','success'));
+            toast.success(message('exportHTML', 'success'));
         }
     });
 }
@@ -79,7 +80,7 @@ function readFileData(name, text, callback) {
     var path = require('path');
     fs.readFile(path.dirname(__dirname) + '/export/index.html', 'utf-8', function(err, tpl) {
         if (err) {
-            global.error(message('exportHTML','error'));
+            toast.error(message('exportHTML', 'error'));
         } else {
             callback(name, tpl, text);
         }
@@ -96,7 +97,6 @@ function copyFileTo(name) {
     copydir.sync(path.dirname(__dirname) + '/export/', name, function(_stat, _path, _file) {
         var stat = true;
         if (_stat === 'file' && path.extname(_path) === '.html') {
-            // copy files, without .html
             stat = false;
         }
         return stat;
@@ -139,4 +139,20 @@ exports.open = function(target, editor) {
     } else if (target == "#exportPDF") {
         chooseDir(target, editor, exportPDF);
     }
+};
+
+/**
+ * setting theme
+ * @method setTheme
+ * @param  {editormd} editor entity of editor
+ * @param  {string} theme    the name of theme
+ */
+exports.setTheme = function(editor, theme) {
+    var t = theme || "default";
+    editor.setTheme(t);
+    editor.setPreviewTheme(t);
+    if (t == "dark") {
+        t = "pastel-on-dark";
+    }
+    editor.setEditorTheme(t);
 };

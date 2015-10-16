@@ -2502,7 +2502,7 @@
                 this.state.preview = true;
 
                 if (this.state.fullscreen) {
-                    preview.css("background", "#fff");
+                    // preview.css("background", "#fff");
                 }
 
                 editor.find("." + this.classPrefix + "preview-close-btn").show().bind(editormd.mouseOrTouch("click", "touchend"), function(){
@@ -2638,11 +2638,11 @@
 
                 $.proxy(settings.onfullscreen, this)();
 
-                $(window).bind("keyup", escHandle);
+                // $(window).bind("keyup", escHandle);
             }
             else
             {
-                $(window).unbind("keyup", escHandle);
+                // $(window).unbind("keyup", escHandle);
                 this.fullscreenExit();
             }
 

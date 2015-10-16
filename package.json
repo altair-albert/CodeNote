@@ -1,5 +1,5 @@
 {
-  "name": "markdown",
+  "name": "CodeNote",
   "main": "./html/index.html",
   "single-instance": false,
   "window": {

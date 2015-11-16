@@ -1,10 +1,11 @@
 {
   "name": "CodeNote",
-  "main": "./html/index.html",
+  "main": "html/index.html",
   "single-instance": false,
   "window": {
     "toolbar": true,
-    "show": true
+    "show": true,
+    "icon":"images/logos/codenote-logo-32x32.png"
   },
   "version": "0.0.2",
   "description": "markdown editor with node-webkit for windows,linux and mac",

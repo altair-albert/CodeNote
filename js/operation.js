@@ -10,9 +10,9 @@ function save(fileName, editor) {
     var md = editor.getMarkdown();
     fs.writeFile(fileName, md, function(err) {
         if (err) {
-            toast.error(message('error'));
+            toast.error(message('savefile','error'));
         } else {
-            toast.success(message('success'));
+            toast.success(message('savefile','success'));
         }
     });
 };

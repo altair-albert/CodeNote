@@ -27,7 +27,7 @@ $(function() {
     global.$ = $;
     global.fileName = "";
     var os = require('os');
-    var menu = require('../js/menu.js');
+    var operation = require('../js/operation.js');
     (function(md, editor) {
         markdownEditor = editormd(editor, {
             width: "100%",
@@ -60,16 +60,16 @@ $(function() {
                 });
                 var saveKeyMap = {
                     "Ctrl-S": function(cm) {
-                        menu.open("#save", editor);
+                        operation.open("#save", editor);
                     },
                     "Ctrl-O": function(cm) {
-                        menu.open("#open", editor);
+                        operation.open("#open", editor);
                     },
                     "Shift-Ctrl-S": function(cm) {
-                        menu.open("#saveas", editor);
+                        operation.open("#saveas", editor);
                     },
                     "Shift-Ctrl-O": function(cm) {
-                        menu.open("#exportHTML", editor);
+                        operation.open("#exportHTML", editor);
                     },
                 };
                 this.addKeyMap(saveKeyMap);
@@ -92,7 +92,7 @@ $(function() {
                  * @param  {mdeditor} editor editor entity
                  */
                 open: function(editor) {
-                    menu.open("#open", this);
+                    operation.open("#open", this);
                 },
                 /**
                  * save file
@@ -100,7 +100,7 @@ $(function() {
                  * @param  {mdeditor} editor editor entity
                  */
                 save: function(editor) {
-                    menu.open("#save", this);
+                    operation.open("#save", this);
                 },
                 /**
                  * export HTML
@@ -108,17 +108,17 @@ $(function() {
                  * @param  {mdeditor} editor editor entity
                  */
                 exportHTML: function(editor) {
-                    menu.open("#exportHTML", this);
+                    operation.open("#exportHTML", this);
                 },
                 "changetheme": function() {
                     var icon = this.toolbar.find('.fa[name=changetheme]');
                     if (icon.hasClass('fa-moon-o')) {
-                        menu.setTheme(this, "default");
+                        operation.setTheme(this, "default");
                         icon.removeClass('fa-moon-o');
                         icon.addClass('fa-sun-o');
                         icon.parent().attr("title", "日间模式");
                     } else {
-                        menu.setTheme(this, "dark");
+                        operation.setTheme(this, "dark");
                         icon.removeClass('fa-sun-o');
                         icon.addClass('fa-moon-o');
                         icon.parent().attr('title', "夜间模式");

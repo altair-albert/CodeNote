@@ -3,7 +3,6 @@
 var os           = require("os");
 var gulp         = require("gulp");
 var gutil        = require("gulp-util");
-var sass         = require("gulp-ruby-sass");
 var jshint       = require("gulp-jshint");
 var uglify       = require("gulp-uglifyjs");
 var rename       = require("gulp-rename");
@@ -11,8 +10,6 @@ var concat       = require("gulp-concat");
 var notify       = require("gulp-notify");
 var header       = require("gulp-header");
 var minifycss    = require("gulp-minify-css");
-//var jsdoc        = require("gulp-jsdoc");
-//var jsdoc2md     = require("gulp-jsdoc-to-markdown");
 var pkg          = require("./package.json");
 var dateFormat   = require("dateformatter").format;
 var replace      = require("gulp-replace");
@@ -35,62 +32,7 @@ var headerComment = ["/*",
 
 var headerMiniComment = "/*! <%= pkg.name %> v<%= pkg.version %> | <%= fileName(file) %> | <%= pkg.description %> | MIT License | By: <%= pkg.author %> | <%= pkg.homepage %> | <%=pkg.today('Y-m-d') %> */\r\n";
 
-var scssTask = function(fileName, path) {
 
-    path = path || "scss/";
-
-    var distPath = "css";
-
-    return sass(path + fileName + ".scss", { style: "expanded", sourcemap: false, noCache : true })
-        .pipe(gulp.dest(distPath))
-        .pipe(header(headerComment, {pkg : pkg, fileName : function(file) {
-            var name = file.path.split(file.base);
-            return name[1].replace("\\", "");
-        }}))
-       .pipe(gulp.dest(distPath))
-       .pipe(rename({ suffix: ".min" }))
-       .pipe(gulp.dest(distPath))
-       .pipe(minifycss())
-       .pipe(gulp.dest(distPath))
-        .pipe(header(headerMiniComment, {pkg : pkg, fileName : function(file) {
-            var name = file.path.split(file.base);
-            return name[1].replace("\\", "");
-        }}))
-       .pipe(gulp.dest(distPath))
-       .pipe(notify({ message: fileName + ".scss task completed!" }));
-};
-
-gulp.task("scss", function() {
-	return scssTask("editormd");
-});
-
-gulp.task("scss2", function() {
-	return scssTask("editormd.preview");
-});
-
-gulp.task("scss3", function() {
-	return scssTask("editormd.logo");
-});
-
-gulp.task("js", function() {
-  return gulp.src("./src/editormd.js")
-            .pipe(jshint("./.jshintrc"))
-            .pipe(jshint.reporter("default"))
-            .pipe(header(headerComment, {pkg : pkg, fileName : function(file) {
-                var name = file.path.split(file.base);
-                return name[1].replace(/[\\\/]?/, "");
-            }}))
-            .pipe(gulp.dest("./"))
-            .pipe(rename({ suffix: ".min" }))
-            .pipe(uglify())  // {outSourceMap: true, sourceRoot: './'}
-            .pipe(gulp.dest("./"))
-            .pipe(header(headerMiniComment, {pkg : pkg, fileName : function(file) {
-                var name = file.path.split(file.base + ( (os.platform() === "win32") ? "\\" : "/") );
-                return name[1].replace(/[\\\/]?/, "");
-            }}))
-            .pipe(gulp.dest("./"))
-            .pipe(notify({ message: "editormd.js task complete" }));
-});
 
 gulp.task("amd", function() {
     var replaceText1 = [
@@ -171,7 +113,7 @@ gulp.task("amd", function() {
         "   }"
     ].join("\r\n");
 
-    gulp.src("src/editormd.js")
+    gulp.src("editormd.js")
         .pipe(rename({ suffix: ".amd" }))
         .pipe(gulp.dest('./'))
         .pipe(header(headerComment, {pkg : pkg, fileName : function(file) {
@@ -307,17 +249,10 @@ gulp.task("cm-addon", function() {
 });
 
 gulp.task("watch", function() {
-	gulp.watch("scss/editormd.scss", ["scss"]);
-	gulp.watch("scss/editormd.preview.scss", ["scss", "scss2"]);
-	gulp.watch("scss/editormd.logo.scss", ["scss", "scss3"]);
-	gulp.watch("src/editormd.js", ["js", "amd"]);
+	gulp.watch("src/editormd.js", ["amd"]);
 });
 
 gulp.task("default", function() {
-    gulp.run("scss");
-    gulp.run("scss2");
-    gulp.run("scss3");
-    gulp.run("js");
     gulp.run("amd");
     gulp.run("cm-addon");
     gulp.run("cm-mode");

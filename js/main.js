@@ -1,3 +1,7 @@
+/**
+ * 菜单栏
+ * @method toolbar
+ */
 function toolbar() {
     return [
         "open", "save", "exportHTML", "exportPDF", "|", "undo", "redo", "|",

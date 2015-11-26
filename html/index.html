@@ -12,14 +12,11 @@
         .dialog {
             display: none;
         }
+
         .amaran-wrapper span {
-            font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体",monospace;
+            font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", monospace;
         }
     </style>
-    <script type="text/javascript">
-        var path=require('path');
-        console.log("path",path.dirname(__dirname));
-    </script>
 </head>
 
 <body>
@@ -35,6 +32,12 @@
     <script src="../lib/amaran/js/jquery.amaran.min.js" charset="utf-8"></script>
     <script src="../editormd.js"></script>
     <script src="../js/main.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            var path = require('path');
+            console.log("path", path.dirname(__dirname));
+        });
+    </script>
 </body>
 
 </html>

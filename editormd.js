@@ -58,9 +58,9 @@
         return new editormd.fn.init(id, options);
     };
 
-    editormd.title        = editormd.$name = "Editor.md";
-    editormd.version      = "1.5.0";
-    editormd.homePage     = "https://pandao.github.io/editor.md/";
+    editormd.title        = editormd.$name = "CodeNote";
+    editormd.version      = "0.0.2";
+    editormd.homePage     = "";
     editormd.classPrefix  = "editormd-";
 
     editormd.toolbarModes = {
@@ -228,7 +228,7 @@
 
         lang : {
             name        : "zh-cn",
-            description : "开源在线Markdown编辑器<br/>Open source online Markdown editor.",
+            description : "开源Markdown编辑器<br/>Open source Markdown editor.",
             tocTitle    : "目录",
             toolbar     : {
                 undo             : "撤销（Ctrl+Z）",
